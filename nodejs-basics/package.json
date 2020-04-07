@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-basics",
+  "version": "1.0.0",
+  "description": "nodejs tutorial package",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "nodejs",
+    "js"
+  ],
+  "author": "Hnatiuk Roman <gnatyuk.info@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
