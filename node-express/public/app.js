@@ -29,16 +29,20 @@ if ($card) {
   $card.addEventListener('click', (event) => {
     if (event.target.classList.contains('js-remove')) {
       const id = event.target.dataset.id;
+      const csrf = event.target.dataset.csrf;
 
       fetch('/card/remove/' + id, {
         method: 'delete',
+        headers: {
+          'X-XSRF-TOKEN': csrf,
+        },
       })
         .then((res) => res.json())
         .then((card) => {
           if (card.courses.length) {
             const html = card.courses
               .map((c) => {
-                return `
+                return ` 
               <tr>
               <td>${c.title}</td>
               <td>${c.count}</td>
