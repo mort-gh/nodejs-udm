@@ -1,29 +1,29 @@
-const { Router } = require('express');
-const Course = require('../models/course');
-const authMiddleware = require('../middleware/auth');
-const router = Router();
+const {Router} = require('express')
+const Course = require('../models/course')
+const auth = require('../middleware/auth')
+const router = Router()
 
-router.get('/', authMiddleware, (req, res) => {
+router.get('/', auth, (req, res) => {
   res.render('add', {
     title: 'Добавить курс',
-    isAdd: true,
-  });
-});
+    isAdd: true
+  })
+})
 
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const course = new Course({
     title: req.body.title,
     price: req.body.price,
     img: req.body.img,
-    userId: req.user,
-  });
+    userId: req.user
+  })
 
   try {
-    await course.save();
-    res.redirect('/courses');
-  } catch (error) {
-    console.log(error);
+    await course.save()
+    res.redirect('/courses')
+  } catch (e) {
+    console.log(e)
   }
-});
+})
 
-module.exports = router;
+module.exports = router

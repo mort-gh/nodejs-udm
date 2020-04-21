@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const csrf = require('csurf');
+const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
@@ -13,20 +14,19 @@ const coursesRoutes = require('./routes/courses');
 const authRoutes = require('./routes/auth');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
+const keys = require('./keys');
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
-
-const MONGODB_URI =
-  'mongodb+srv://mort:6EnU9s3987Rdx6CB@cluster0-5qlai.mongodb.net/shop';
-
-const store = new MongoStore({
-  collection: 'sessions',
-  uri: MONGODB_URI,
-});
-
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
+  helpers: require('./utils/hbs-helpers'),
+});
+const store = new MongoStore({
+  collection: 'sessions',
+  uri: keys.MONGODB_URI,
 });
 
 app.engine('hbs', hbs.engine);
@@ -37,13 +37,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: 'some secret value',
+    secret: keys.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store,
   })
 );
 app.use(csrf());
+app.use(flash());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
@@ -54,25 +55,18 @@ app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
 
-const PORT = process.env.PORT || 3000;
-
 async function start() {
   try {
-    const options = {
+    await mongoose.connect(keys.MONGODB_URI, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
       useFindAndModify: false,
-    };
-
-    await mongoose
-      .connect(MONGODB_URI, options)
-      .then(() => console.log('* * * DB connected * * * '));
-
-    app.listen(PORT, () => {
-      console.log(`* * * Server is running on port ${PORT} * * * `);
+      useUnifiedTopology: true,
     });
-  } catch (error) {
-    console.log(error);
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (e) {
+    console.log(e);
   }
 }
 
