@@ -14,6 +14,7 @@ const coursesRoutes = require('./routes/courses');
 const authRoutes = require('./routes/auth');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
+const errorMiddleware = require('./middleware/error');
 const keys = require('./keys');
 
 const PORT = process.env.PORT || 3000;
@@ -54,6 +55,9 @@ app.use('/courses', coursesRoutes);
 app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
+
+// 404 - connect last
+app.use(errorMiddleware);
 
 async function start() {
   try {
