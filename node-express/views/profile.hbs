@@ -1,0 +1,58 @@
+<h1>Профиль</h1>
+
+<div class="row">
+    <div class="card">
+        <div>
+
+            <div class="col s3">
+                <div class="card-image">
+
+                    {{#if user.avatarUrl}}
+                    <img class="avatar" alt="avatar-{{user.name}}" src="/{{user.avatarUrl}}">
+                    {{else}}
+                    <img class="avatar" alt="no-avatar"
+                        src="https://www.caretechfoundation.org.uk/wp-content/uploads/anonymous-person-221117.jpg">
+                    {{/if}}
+
+                </div>
+            </div>
+
+            <div class="col s6">
+                <form action="/profile" method="POST" enctype="multipart/form-data">
+                    <div class="card-content">
+                        <label for="userEmail">Email</label>
+                        <p id="userEmail"><strong>{{user.email}}</strong></p>
+
+                        <br /> <br />
+
+                        <div class="input-field">
+                            <input id="name" name="name" type="text" class="validate" value="{{user.name}}" required>
+                            <label for="name">Имя</label>
+                            <span class="helper-text" data-error="Имя не может быть пустым"></span>
+                        </div>
+
+                        <label for="avatar">Аватар</label>
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Выбрать</span>
+                                <input type="file" name="avatar">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="_csrf" value="{{csrf}}">
+
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end">
+                        <button type="submit" class="btn amber darken-4">Изменить</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
