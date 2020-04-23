@@ -1,5 +1,8 @@
 # nodejs-udm
 
+To run on [Heroku](https://pacific-citadel-34381.herokuapp.com/)
+
+
 To run locally, `npm run start`, or developer's mode `npm run dev`, then open https://localhost:3000.
 
 ## The project is built on a Node.js.
